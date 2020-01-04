@@ -18,17 +18,17 @@ menu "Application Configuration"
 		help
 			Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.
 
-	config ESP_MYSQL_SERVER_IP
-		string "IP address of MySQL(php-crud-api) server"
+	config ESP_WEB_SERVER_IP
+		string "IP address of WEB server"
 		default "192.168.10.43"
 		help
-			IP address of MySQL(php-crud-api) server.
+			IP address of your WEB server.
 
-	config ESP_MYSQL_SERVER_PORT
-		string "Port number of php-crud-api"
+	config ESP_WEB_SERVER_PORT
+		string "Port number of WEB serve"
 		default "8080"
 		help
-			Port number of php-crud-api.
+			Port number of your WEB server.
 
 	config ESP_PHP_PATH
 		string "Path of php script"

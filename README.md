@@ -158,8 +158,8 @@ You have to set this config value with menuconfig.
 CONFIG_ESP_WIFI_SSID   
 CONFIG_ESP_WIFI_PASSWORD   
 CONFIG_ESP_MAXIMUM_RETRY   
-CONFIG_ESP_MYSQL_SERVER_IP   
-CONFIG_ESP_MYSQL_SERVER_PORT   
+CONFIG_ESP_WEB_SERVER_IP   
+CONFIG_ESP_WEB_SERVER_PORT   
 CONFIG_ESP_PHP_PATH   
 
 ```
@@ -171,7 +171,7 @@ make flash
 
 ![menuconfig-11](https://user-images.githubusercontent.com/6020549/71758309-4f3ae300-2ee1-11ea-86f6-89869ae35f63.jpg)
 
-![menuconfig-12](https://user-images.githubusercontent.com/6020549/71758308-4ea24c80-2ee1-11ea-8c80-d7a471867303.jpg)
+![menuconfig-12](https://user-images.githubusercontent.com/6020549/71758645-033e6d00-2ee6-11ea-81b5-a3b9d954e9fe.jpg)
 
 ## List
 ```

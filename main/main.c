@@ -30,8 +30,8 @@
 #define EXAMPLE_ESP_WIFI_SSID			CONFIG_ESP_WIFI_SSID
 #define EXAMPLE_ESP_WIFI_PASS			CONFIG_ESP_WIFI_PASSWORD
 #define EXAMPLE_ESP_MAXIMUM_RETRY		CONFIG_ESP_MAXIMUM_RETRY
-#define EXAMPLE_ESP_MYSQL_SERVER_IP		CONFIG_ESP_MYSQL_SERVER_IP
-#define EXAMPLE_ESP_MYSQL_SERVER_PORT	CONFIG_ESP_MYSQL_SERVER_PORT
+#define EXAMPLE_ESP_WEB_SERVER_IP		CONFIG_ESP_WEB_SERVER_IP
+#define EXAMPLE_ESP_WEB_SERVER_PORT		CONFIG_ESP_WEB_SERVER_PORT
 #define EXAMPLE_ESP_PHP_PATH			CONFIG_ESP_PHP_PATH
 
 /* FreeRTOS event group to signal when we are connected*/
@@ -202,7 +202,7 @@ esp_err_t http_client_get(char * path)
 	ESP_LOGI(TAG, "path=%s",path);
 	char url[64];
 	//http://192.168.10.43:8080/api.php/records/posts
-	sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_MYSQL_SERVER_IP, EXAMPLE_ESP_MYSQL_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
+	sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
 	if (strlen(path) > 0) {
 		int url_length = strlen(url);
 		if (url[url_length-1] != '/') strcat(url,"/");
@@ -268,7 +268,7 @@ int http_client_post(void)
 {
     char url[64];
     //http://192.168.10.43:8080/api.php/records/posts
-    sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_MYSQL_SERVER_IP, EXAMPLE_ESP_MYSQL_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
+    sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
     ESP_LOGI(TAG, "url=%s",url);
 
     esp_http_client_config_t config = {
@@ -330,7 +330,7 @@ esp_err_t http_client_put(char * path)
 	ESP_LOGI(TAG, "path=%s", path);
 	char url[64];
 	//http://192.168.10.43:8080/api.php/records/posts
-	sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_MYSQL_SERVER_IP, EXAMPLE_ESP_MYSQL_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
+	sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
 	ESP_LOGD(TAG, "url=%s",url);
 	
     esp_http_client_config_t config = {
@@ -395,7 +395,7 @@ esp_err_t http_client_delete(char * path)
     ESP_LOGI(TAG, "path=%s", path);
     char url[64];
     //http://192.168.10.43:8080/api.php/records/posts
-    sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_MYSQL_SERVER_IP, EXAMPLE_ESP_MYSQL_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
+    sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
     ESP_LOGD(TAG, "url=%s",url);
 
     esp_http_client_config_t config = {
