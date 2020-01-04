@@ -1,5 +1,5 @@
 # esp-idf-mysql
-Operate MySQL from ESP32 via PHP   
+Operate MySQL from ESP32 via PHP.   
 Use [this](https://github.com/mevdschee/php-crud-api) as middleware.
 
 ![0001](https://user-images.githubusercontent.com/6020549/71568475-e7fce780-2b0a-11ea-8e91-52a6d268d0cd.jpg)
