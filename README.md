@@ -166,7 +166,7 @@ CONFIG_ESP_PHP_PATH
 git clone https://github.com/nopnop2002/esp-idf-mysql
 cd esp-idf-mysql/
 make menuconfig
-make flash
+make flash monitor
 ```
 
 ![menuconfig-11](https://user-images.githubusercontent.com/6020549/71758309-4f3ae300-2ee1-11ea-86f6-89869ae35f63.jpg)
