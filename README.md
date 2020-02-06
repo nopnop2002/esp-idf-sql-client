@@ -155,12 +155,18 @@ $ curl http://localhost:8080/api.php/records/posts/ | python -mjson.tool
 
 ## Build Firmware
 You have to set this config value with menuconfig.   
-CONFIG_ESP_WIFI_SSID   
-CONFIG_ESP_WIFI_PASSWORD   
-CONFIG_ESP_MAXIMUM_RETRY   
-CONFIG_ESP_WEB_SERVER_IP   
-CONFIG_ESP_WEB_SERVER_PORT   
-CONFIG_ESP_PHP_PATH   
+- CONFIG_ESP_WIFI_SSID   
+SSID of your wifi.
+- CONFIG_ESP_WIFI_PASSWORD   
+PASSWORD of your wifi.
+- CONFIG_ESP_MAXIMUM_RETRY   
+Maximum number of retries when connecting to wifi.
+- CONFIG_ESP_WEB_SERVER_IP   
+IP or DNS of WEB Server
+- CONFIG_ESP_WEB_SERVER_PORT   
+Port number of WEB Server
+- CONFIG_ESP_PHP_PATH   
+Path of PHP Script
 
 ```
 git clone https://github.com/nopnop2002/esp-idf-mysql
