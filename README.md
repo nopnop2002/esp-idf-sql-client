@@ -153,7 +153,11 @@ $ curl http://localhost:8080/api.php/records/posts/ | python -mjson.tool
 
 # ESP32 Side
 
-## Build Firmware
+
+## Software requirements
+esp-idf ver4.1 or later.   
+
+## Install
 You have to set this config value with menuconfig.   
 - CONFIG_ESP_WIFI_SSID   
 SSID of your wifi.
