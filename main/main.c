@@ -272,19 +272,19 @@ esp_err_t http_client_get(char * path)
 
 int http_client_post(void)
 {
-    char url[64];
-    //http://192.168.10.43:8080/api.php/records/posts
-    sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
-    ESP_LOGI(TAG, "url=%s",url);
+	char url[64];
+	//http://192.168.10.43:8080/api.php/records/posts
+	sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
+	ESP_LOGI(TAG, "url=%s",url);
 
-    esp_http_client_config_t config = {
-        //.url = "http://192.168.10.43:3000/todos",
-        .url = url,
-        .event_handler = _http_event_handler,
-    };
-    esp_http_client_handle_t client = esp_http_client_init(&config);
+	esp_http_client_config_t config = {
+		//.url = "http://192.168.10.43:3000/todos",
+		.url = url,
+		.event_handler = _http_event_handler,
+	};
+	esp_http_client_handle_t client = esp_http_client_init(&config);
 
-    // POST
+	// POST
 	long id = 0;
 	//const char *post_data = "field1=value1&field2=value2";
 	const char *post_data = "user_id=1&category_id=3&content=Hello World";
@@ -292,42 +292,42 @@ int http_client_post(void)
 	esp_http_client_set_url(client, url);
 	esp_http_client_set_method(client, HTTP_METHOD_POST);
 	esp_http_client_set_post_field(client, post_data, strlen(post_data));
-    esp_err_t err = esp_http_client_perform(client);
-    if (err == ESP_OK) {
-        ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
-                esp_http_client_get_status_code(client),
-                esp_http_client_get_content_length(client));
-        //Receive an item from no-split ring buffer
-        int bufferSize = esp_http_client_get_content_length(client);
-        char *buffer = malloc(bufferSize + 1);
-        size_t item_size;
-        int index = 0;
-        while (1) {
-            char *item = (char *)xRingbufferReceive(xRingbuffer, &item_size, pdMS_TO_TICKS(1000));
-            if (item != NULL) {
-                for (int i = 0; i < item_size; i++) {
-                    //printf("%c", item[i]);
-                    buffer[index] = item[i];
-                    index++;
-                    buffer[index] = 0;
-                }
-                //printf("\n");
-                //Return Item
-                vRingbufferReturnItem(xRingbuffer, (void *)item);
-            } else {
-                //Failed to receive item
-                ESP_LOGD(TAG, "End of receive item");
-                break;
-            }
-        }
-        ESP_LOGI(TAG, "buffer=\n%s", buffer);
+	esp_err_t err = esp_http_client_perform(client);
+	if (err == ESP_OK) {
+		ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
+				esp_http_client_get_status_code(client),
+				esp_http_client_get_content_length(client));
+		//Receive an item from no-split ring buffer
+		int bufferSize = esp_http_client_get_content_length(client);
+		char *buffer = malloc(bufferSize + 1);
+		size_t item_size;
+		int index = 0;
+		while (1) {
+			char *item = (char *)xRingbufferReceive(xRingbuffer, &item_size, pdMS_TO_TICKS(1000));
+			if (item != NULL) {
+				for (int i = 0; i < item_size; i++) {
+					//printf("%c", item[i]);
+					buffer[index] = item[i];
+					index++;
+					buffer[index] = 0;
+				}
+				//printf("\n");
+				//Return Item
+				vRingbufferReturnItem(xRingbuffer, (void *)item);
+			} else {
+				//Failed to receive item
+				ESP_LOGD(TAG, "End of receive item");
+				break;
+			}
+		}
+		ESP_LOGI(TAG, "buffer=\n%s", buffer);
 		id = strtol(buffer, NULL, 10);
-        free(buffer);
+		free(buffer);
 
-    } else {
-        ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
-    }
-    esp_http_client_cleanup(client);
+	} else {
+		ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
+	}
+	esp_http_client_cleanup(client);
 	return (int)id;
 }
 
@@ -339,124 +339,124 @@ esp_err_t http_client_put(char * path)
 	sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
 	ESP_LOGD(TAG, "url=%s",url);
 	
-    esp_http_client_config_t config = {
-        //.url = "http://192.168.10.43:3000/todos",
-        .url = url,
-        .event_handler = _http_event_handler,
-    };
-    esp_http_client_handle_t client = esp_http_client_init(&config);
+	esp_http_client_config_t config = {
+		//.url = "http://192.168.10.43:3000/todos",
+		.url = url,
+		.event_handler = _http_event_handler,
+	};
+	esp_http_client_handle_t client = esp_http_client_init(&config);
 
-    // PUT
+	// PUT
 	esp_err_t ret;
 	int url_length = strlen(url);
 	if (url[url_length-1] != '/') strcat(url,"/");
 	strcat(url, path);
 	ESP_LOGI(TAG, "url=%s",url);
-    const char *post_data = "content=Hello Japan";
-    esp_http_client_set_url(client, url);
+	const char *post_data = "content=Hello Japan";
+	esp_http_client_set_url(client, url);
 	esp_http_client_set_method(client, HTTP_METHOD_PUT);
 	esp_http_client_set_post_field(client, post_data, strlen(post_data));
-    esp_err_t err = esp_http_client_perform(client);
-    if (err == ESP_OK) {
-        ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
-                esp_http_client_get_status_code(client),
-                esp_http_client_get_content_length(client));
-        //Receive an item from no-split ring buffer
-        int bufferSize = esp_http_client_get_content_length(client);
-        char *buffer = malloc(bufferSize + 1);
-        size_t item_size;
-        int index = 0;
-        while (1) {
-            char *item = (char *)xRingbufferReceive(xRingbuffer, &item_size, pdMS_TO_TICKS(1000));
-            if (item != NULL) {
-                for (int i = 0; i < item_size; i++) {
-                    //printf("%c", item[i]);
-                    buffer[index] = item[i];
-                    index++;
-                    buffer[index] = 0;
-                }
-                //printf("\n");
-                //Return Item
-                vRingbufferReturnItem(xRingbuffer, (void *)item);
-            } else {
-                //Failed to receive item
-                ESP_LOGD(TAG, "End of receive item");
-                break;
-            }
-        }
-        ESP_LOGI(TAG, "buffer=\n%s", buffer);
-        ret = ESP_OK;
-        free(buffer);
+	esp_err_t err = esp_http_client_perform(client);
+	if (err == ESP_OK) {
+		ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
+				esp_http_client_get_status_code(client),
+				esp_http_client_get_content_length(client));
+		//Receive an item from no-split ring buffer
+		int bufferSize = esp_http_client_get_content_length(client);
+		char *buffer = malloc(bufferSize + 1);
+		size_t item_size;
+		int index = 0;
+		while (1) {
+			char *item = (char *)xRingbufferReceive(xRingbuffer, &item_size, pdMS_TO_TICKS(1000));
+			if (item != NULL) {
+				for (int i = 0; i < item_size; i++) {
+					//printf("%c", item[i]);
+					buffer[index] = item[i];
+					index++;
+					buffer[index] = 0;
+				}
+				//printf("\n");
+				//Return Item
+				vRingbufferReturnItem(xRingbuffer, (void *)item);
+			} else {
+				//Failed to receive item
+				ESP_LOGD(TAG, "End of receive item");
+				break;
+			}
+		}
+		ESP_LOGI(TAG, "buffer=\n%s", buffer);
+		ret = ESP_OK;
+		free(buffer);
 
-    } else {
-        ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
+	} else {
+		ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
 		ret = ESP_FAIL;
-    }
-    esp_http_client_cleanup(client);
-    return ret;
+	}
+	esp_http_client_cleanup(client);
+	return ret;
 }
 
 esp_err_t http_client_delete(char * path)
 {
-    ESP_LOGI(TAG, "path=%s", path);
-    char url[64];
-    //http://192.168.10.43:8080/api.php/records/posts
-    sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
-    ESP_LOGD(TAG, "url=%s",url);
+	ESP_LOGI(TAG, "path=%s", path);
+	char url[64];
+	//http://192.168.10.43:8080/api.php/records/posts
+	sprintf(url, "http://%s:%s/%s", EXAMPLE_ESP_WEB_SERVER_IP, EXAMPLE_ESP_WEB_SERVER_PORT, EXAMPLE_ESP_PHP_PATH);
+	ESP_LOGD(TAG, "url=%s",url);
 
-    esp_http_client_config_t config = {
-        //.url = "http://192.168.10.43:3000/todos",
-        .url = url,
-        .event_handler = _http_event_handler,
-    };
-    esp_http_client_handle_t client = esp_http_client_init(&config);
+	esp_http_client_config_t config = {
+		//.url = "http://192.168.10.43:3000/todos",
+		.url = url,
+		.event_handler = _http_event_handler,
+	};
+	esp_http_client_handle_t client = esp_http_client_init(&config);
 
-    // DELETE
-    esp_err_t ret;
-    int url_length = strlen(url);
-    if (url[url_length-1] != '/') strcat(url,"/");
-    strcat(url, path);
-    ESP_LOGI(TAG, "url=%s",url);
-    esp_http_client_set_url(client, url);
-    esp_http_client_set_method(client, HTTP_METHOD_DELETE);
-    esp_err_t err = esp_http_client_perform(client);
-    if (err == ESP_OK) {
-        ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
-                esp_http_client_get_status_code(client),
-                esp_http_client_get_content_length(client));
-        //Receive an item from no-split ring buffer
-        int bufferSize = esp_http_client_get_content_length(client);
-        char *buffer = malloc(bufferSize + 1);
-        size_t item_size;
-        int index = 0;
-        while (1) {
-            char *item = (char *)xRingbufferReceive(xRingbuffer, &item_size, pdMS_TO_TICKS(1000));
-            if (item != NULL) {
-                for (int i = 0; i < item_size; i++) {
-                    //printf("%c", item[i]);
-                    buffer[index] = item[i];
-                    index++;
-                    buffer[index] = 0;
-                }
-                //printf("\n");
-                //Return Item
-                vRingbufferReturnItem(xRingbuffer, (void *)item);
-            } else {
-                //Failed to receive item
-                ESP_LOGD(TAG, "End of receive item");
-                break;
-            }
-        }
-        ESP_LOGI(TAG, "buffer=\n%s", buffer);
-        ret = ESP_OK;
-        free(buffer);
+	// DELETE
+	esp_err_t ret;
+	int url_length = strlen(url);
+	if (url[url_length-1] != '/') strcat(url,"/");
+	strcat(url, path);
+	ESP_LOGI(TAG, "url=%s",url);
+	esp_http_client_set_url(client, url);
+	esp_http_client_set_method(client, HTTP_METHOD_DELETE);
+	esp_err_t err = esp_http_client_perform(client);
+	if (err == ESP_OK) {
+		ESP_LOGI(TAG, "HTTP GET Status = %d, content_length = %d",
+				esp_http_client_get_status_code(client),
+				esp_http_client_get_content_length(client));
+		//Receive an item from no-split ring buffer
+		int bufferSize = esp_http_client_get_content_length(client);
+		char *buffer = malloc(bufferSize + 1);
+		size_t item_size;
+		int index = 0;
+		while (1) {
+			char *item = (char *)xRingbufferReceive(xRingbuffer, &item_size, pdMS_TO_TICKS(1000));
+			if (item != NULL) {
+				for (int i = 0; i < item_size; i++) {
+					//printf("%c", item[i]);
+					buffer[index] = item[i];
+					index++;
+					buffer[index] = 0;
+				}
+				//printf("\n");
+				//Return Item
+				vRingbufferReturnItem(xRingbuffer, (void *)item);
+			} else {
+				//Failed to receive item
+				ESP_LOGD(TAG, "End of receive item");
+				break;
+			}
+		}
+		ESP_LOGI(TAG, "buffer=\n%s", buffer);
+		ret = ESP_OK;
+		free(buffer);
 
-    } else {
-        ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
-        ret = ESP_FAIL;
-    }
-    esp_http_client_cleanup(client);
-    return ret;
+	} else {
+		ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
+		ret = ESP_FAIL;
+	}
+	esp_http_client_cleanup(client);
+	return ret;
 }
 
 void keyin(void *pvParameters)
