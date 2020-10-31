@@ -184,7 +184,7 @@ make flash monitor
 
 ![menuconfig-12](https://user-images.githubusercontent.com/6020549/71758645-033e6d00-2ee6-11ea-81b5-a3b9d954e9fe.jpg)
 
-## List
+## Read all data
 ```
 I (35386) JSON: path=
 I (35386) JSON: url=http://192.168.10.43:8080/api.php/records/posts
@@ -211,7 +211,7 @@ I (37726) JSON: [content]
 I (37726) JSON: It works!
 ```
 
-## Read
+## Read by ID
 ```
 I (70386) JSON: path=1
 I (70386) JSON: url=http://192.168.10.43:8080/api.php/records/posts/1
@@ -229,7 +229,7 @@ I (71436) JSON: [content]
 I (71436) JSON: blog started
 ```
 
-## Create
+## Create new record
 ```
 I (95486) JSON: url=http://192.168.10.43:8080/api.php/records/posts
 I (95656) JSON: HTTP GET Status = 200, content_length = 1
@@ -238,7 +238,7 @@ I (96656) JSON: buffer=
 I (96656) JSON: new_id=3
 ```
 
-## Update
+## Update record
 ```
 I (115586) JSON: path=3
 I (115586) JSON: url=http://192.168.10.43:8080/api.php/records/posts/3
@@ -275,7 +275,7 @@ I (118856) JSON: [content]
 I (118856) JSON: Hello Japan
 ```
 
-## Delete
+## Delete record
 ```
 I (149386) JSON: path=3
 I (149386) JSON: url=http://192.168.10.43:8080/api.php/records/posts/3
