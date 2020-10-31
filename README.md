@@ -101,7 +101,7 @@ mysql> select * from posts;
 mysql> exit
 ```
 
-## Install PHP & PDO drivers for MySQL
+## Install PHP & PDO driver for MySQL
 ```
 
 $ sudo apt install php
