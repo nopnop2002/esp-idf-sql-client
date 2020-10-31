@@ -5,7 +5,7 @@ Use [this](https://github.com/mevdschee/php-crud-api) as PHP script of WEB serve
 
 ![0001](https://user-images.githubusercontent.com/6020549/71758785-7694ae80-2ee7-11ea-99cc-cf65c44f48bc.jpg)
 
-# Host Side
+# Server Side
 
 ## Install php-crud-api
 ```
