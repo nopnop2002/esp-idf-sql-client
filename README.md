@@ -1,5 +1,6 @@
 # esp-idf-mysql
-Operate MySQL from ESP32 via PHP.   
+MySQL access example for esp-idf.   
+You can access MySQL on the server over the network.   
 Use [this](https://github.com/mevdschee/php-crud-api) as PHP script of WEB server.
 
 ![0001](https://user-images.githubusercontent.com/6020549/71758785-7694ae80-2ee7-11ea-99cc-cf65c44f48bc.jpg)
