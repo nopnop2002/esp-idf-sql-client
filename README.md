@@ -188,54 +188,57 @@ make flash monitor
 
 ## Read all data
 ```
-I (2929) JSON:
+I (3592) MYSQL:
 {"records":[{"id":1,"user_id":1,"category_id":1,"content":"blog started"},{"id":2,"user_id":1,"category_id":2,"content":"It works!"}]}
-I (8902) JSON: Deserialize.....
-I (8902) JSON: [id] int=1 double=1.000000
-I (8912) JSON: [user_id] int=1 double=1.000000
-I (8912) JSON: [category_id] int=1 double=1.000000
-I (8922) JSON: [content] blog started
-I (8922) JSON: [id] int=2 double=2.000000
-I (8932) JSON: [user_id] int=1 double=1.000000
-I (8932) JSON: [category_id] int=2 double=2.000000
-I (8942) JSON: [content] It works!
+I (3592) MYSQL: Deserialize.....
+I (3602) MYSQL: [id] int=1 double=1.000000
+I (3602) MYSQL: [user_id] int=1 double=1.000000
+I (3612) MYSQL: [category_id] int=1 double=1.000000
+I (3612) MYSQL: [content] blog started
+I (3622) MYSQL: [id] int=2 double=2.000000
+I (3622) MYSQL: [user_id] int=1 double=1.000000
+I (3632) MYSQL: [category_id] int=2 double=2.000000
+I (3632) MYSQL: [content] It works
 ```
 
 ## Read by ID
 ```
-I (24179) JSON:
+I (20602) MYSQL:
 {"id":2,"user_id":1,"category_id":2,"content":"It works!"}
-I (27092) JSON: Deserialize.....
-I (27092) JSON: [id] int=2 double=2.000000
-I (27092) JSON: [user_id] int=1 double=1.000000
-I (27102) JSON: [category_id] int=2 double=2.000000
-I (27102) JSON: [content] It works!
+I (20602) MYSQL: Deserialize.....
+I (20602) MYSQL: [id] int=2 double=2.000000
+I (20602) MYSQL: [user_id] int=1 double=1.000000
+I (20612) MYSQL: [category_id] int=2 double=2.000000
+I (20612) MYSQL: [content] It works!
 ```
 
 ## Create new record
 ```
-I (37689) JSON:
-{"id":14,"user_id":1,"category_id":3,"content":"Hello World"}
-I (39452) JSON: Deserialize.....
-I (39452) JSON: [id] int=15 double=15.000000
-I (39452) JSON: [user_id] int=1 double=1.000000
-I (39462) JSON: [category_id] int=3 double=3.000000
-I (39462) JSON: [content] Hello World
+I (32932) MYSQL:
+{"id":16,"user_id":1,"category_id":3,"content":"Hello World"}
+I (32932) MYSQL: Deserialize.....
+I (32932) MYSQL: [id] int=16 double=16.000000
+I (32942) MYSQL: [user_id] int=1 double=1.000000
+I (32942) MYSQL: [category_id] int=3 double=3.000000
+I (32952) MYSQL: [content] Hello World
 ```
 
 ## Update record
 ```
-I (64519) JSON:
-{"id":14,"user_id":1,"category_id":3,"content":"Hello Japan"}
-I (51542) JSON: Deserialize.....
-I (51542) JSON: [id] int=15 double=15.000000
-I (51542) JSON: [user_id] int=1 double=1.000000
-I (51552) JSON: [category_id] int=3 double=3.000000
-I (51552) JSON: [content] Hello Japan
+I (42872) MYSQL:
+{"id":16,"user_id":1,"category_id":3,"content":"Hello Japan"}
+I (42872) MYSQL: Deserialize.....
+I (42872) MYSQL: [id] int=16 double=16.000000
+I (42872) MYSQL: [user_id] int=1 double=1.000000
+I (42882) MYSQL: [category_id] int=3 double=3.000000
+I (42882) MYSQL: [content] Hello Japan
 ```
 
 ## Delete record
 ```
-I (84279) JSON:
-{"code":1003,"message":"Record '14' not found"}
+I (54642) MYSQL:
+{"code":1003,"message":"Record '16' not found"}
+I (54642) MYSQL: Deserialize.....
+I (54642) MYSQL: [code] int=1003 double=1003.000000
+I (54652) MYSQL: [message] Record '16' not found
 ```

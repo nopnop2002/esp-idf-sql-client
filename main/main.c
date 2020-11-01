@@ -41,7 +41,7 @@ static EventGroupHandle_t wifi_event_group;
 const int WIFI_CONNECTED_BIT = BIT0;
 
 
-static const char *TAG = "JSON";
+static const char *TAG = "MYSQL";
 
 static int s_retry_num = 0;
 
