@@ -36,4 +36,10 @@ menu "Application Configuration"
 		help
 			Path of php script.
 
+    config JSON_PARSE
+        bool "Enable JSON parse"
+        default false
+        help
+            Enable JSON parse.
+
 endmenu
