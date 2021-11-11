@@ -154,6 +154,31 @@ $ curl http://localhost:8080/api.php/records/posts/ | python -mjson.tool
 }
 ```
 
+## Test php-crud-api from remote
+```
+$ curl http://ServerIP:8080/api.php/records/posts/ | python -mjson.tool
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   134  100   134    0     0   8933      0 --:--:-- --:--:-- --:--:--  8933
+{
+    "records": [
+        {
+            "category_id": 1,
+            "content": "blog started",
+            "id": 1,
+            "user_id": 1
+        },
+        {
+            "category_id": 2,
+            "content": "It works!",
+            "id": 2,
+            "user_id": 1
+        }
+    ]
+}
+```
+
+
 ---
 
 # ESP32 Side
