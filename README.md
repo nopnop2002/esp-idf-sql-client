@@ -7,6 +7,10 @@ Use [this](https://github.com/mevdschee/php-crud-api) as PHP script of WEB serve
 
 # Server Side
 
+## Install MySQL Server
+Many installation methods are open to the Internet.   
+I referred [here](https://docs.rackspace.com/support/how-to/install-mysql-server-on-the-ubuntu-operating-system/).   
+
 ## Install php-crud-api
 ```
 $ cd $HOME
@@ -106,7 +110,7 @@ mysql> exit
 
 $ sudo apt install php
 
-$ sudo apt-get install php-mysql
+$ sudo apt install php-mysql
 
 $ php --version
 PHP 7.2.24-0ubuntu0.18.04.1 (cli) (built: Oct 28 2019 12:07:07) ( NTS )
@@ -178,8 +182,8 @@ Enable JSON parse.
 ```
 git clone https://github.com/nopnop2002/esp-idf-mysql
 cd esp-idf-mysql/
-make menuconfig
-make flash monitor
+idf.py menuconfig
+idf.py flash monitor
 ```
 
 ![menuconfig-1](https://user-images.githubusercontent.com/6020549/97793281-68114380-1c2d-11eb-9787-c8df218693ed.jpg)
