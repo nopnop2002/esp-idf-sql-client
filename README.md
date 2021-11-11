@@ -10,6 +10,7 @@ Use [this](https://github.com/mevdschee/php-crud-api) as PHP script of WEB serve
 ## Install MySQL Server
 Many installation methods are open to the Internet.   
 I referred [here](https://docs.rackspace.com/support/how-to/install-mysql-server-on-the-ubuntu-operating-system/).   
+__No remote access permission is required.__   
 
 ## Install php-crud-api
 ```
