@@ -40,7 +40,8 @@ Path of PHP Script,
 
 
 ![menuconfig-1](https://user-images.githubusercontent.com/6020549/97793281-68114380-1c2d-11eb-9787-c8df218693ed.jpg)
-![menuconfig-2](https://user-images.githubusercontent.com/6020549/97793282-69427080-1c2d-11eb-929f-2dce855073c3.jpg)
+![menuconfig-2](https://user-images.githubusercontent.com/6020549/160365288-21f73e82-2d63-4d8e-94f0-d7a6aa03d818.jpg)
+
 
 # Read all data
 ```
