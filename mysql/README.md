@@ -105,7 +105,6 @@ mysql> exit
 
 # Install PHP & PDO driver for MySQL
 ```
-
 $ sudo apt install php
 
 $ sudo apt install php-mysql

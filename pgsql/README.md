@@ -15,6 +15,23 @@ $ cd $HOME
 $ git clone https://github.com/mevdschee/php-crud-api
 ```
 
+# Change api.php for PostgreSQL
+```
+$ cd php-crud-api
+
+$ vi api.php
+
+    $config = new Config([
+        'driver' => 'pgsql',
+        // 'address' => 'localhost',
+        // 'port' => '3306',
+        'username' => 'php-crud-api',
+        'password' => 'php-crud-api',
+        'database' => 'php-crud-api',
+        // 'debug' => false
+    ]);
+```
+
 # Create DB and User
 ```
 $ sudo -u postgres psql
@@ -94,8 +111,7 @@ php-crud-api=> select * from posts;
 
 php-crud-api=> quit;
 ```
-
-# Install PHP & PDO driver for MySQL
+# Install PHP & PDO driver for PostgreSQL
 ```
 $ sudo apt install php
 
@@ -108,22 +124,6 @@ Zend Engine v3.4.0, Copyright (c) Zend Technologies
     with Zend OPcache v7.4.3, Copyright (c), by Zend Technologies
 ```
 
-# Change api.php for postgres
-```
-$ cd php-crud-api
-
-$ vi api.php
-
-    $config = new Config([
-        'driver' => 'pgsql',
-        // 'address' => 'localhost',
-        // 'port' => '3306',
-        'username' => 'php-crud-api',
-        'password' => 'php-crud-api',
-        'database' => 'php-crud-api',
-        // 'debug' => false
-    ]);
-```
 
 
 # Start Built-in WEB Server
