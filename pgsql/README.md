@@ -2,7 +2,7 @@
 You can access PostgreSQL on the server over the network.   
 Use [this](https://github.com/mevdschee/php-crud-api) as PHP script of WEB server.
 
-![0001](https://user-images.githubusercontent.com/6020549/71758785-7694ae80-2ee7-11ea-99cc-cf65c44f48bc.jpg)
+![Slide3](https://user-images.githubusercontent.com/6020549/160417481-46335bb2-73f7-4a5f-8476-50b5b18e2a7a.JPG)
 
 # Install PostgreSQL Server
 Many installation methods are open to the Internet.   
