@@ -22,10 +22,8 @@
 
 static const char *TAG = "HTTP";
 
-//EventGroupHandle_t xEventGroup;
-extern EventGroupHandle_t xEventGroup;
+extern EventGroupHandle_t s_key_event_group;
 /* Is the Enter key entered */
-//const int KEYBOARD_ENTER_BIT = BIT2;
 extern int KEYBOARD_ENTER_BIT;
 
 
@@ -94,6 +92,13 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 	return ESP_OK;
 }
 
+void JSON_Record(const cJSON * const array) {
+		int id = cJSON_GetObjectItem(array,"id")->valueint;
+		int user_id = cJSON_GetObjectItem(array,"user_id")->valueint;
+		int category_id = cJSON_GetObjectItem(array,"category_id")->valueint;
+		char *content = cJSON_GetObjectItem(array,"content")->valuestring;
+		ESP_LOGI(TAG, "%d\t%d\t%d\t%s", id, user_id, category_id, content);
+}
 
 char *JSON_Types(int type) {
 	if (type == cJSON_Invalid) return ("cJSON_Invalid");
@@ -108,19 +113,38 @@ char *JSON_Types(int type) {
 	return NULL;
 }
 
+void JSON_Print(const cJSON * const root) {
+	ESP_LOGI(TAG, "-----------------------------------------");
+	ESP_LOGD(TAG, "root->type=%s", JSON_Types(root->type));
+	if (cJSON_IsArray(root)) {
+		ESP_LOGD(TAG, "JSON_Print root->type is Array");
+		int root_array_size = cJSON_GetArraySize(root); 
+		ESP_LOGD(TAG, "JSON_Print root_array_size=%d", root_array_size);
+		for (int i=0;i<root_array_size;i++) {
+			cJSON *record = cJSON_GetArrayItem(root,i);
+			JSON_Record(record);
+		}
+	} else {
+		ESP_LOGD(TAG, "JSON_Print root->type is Object");
+		JSON_Record(root);
+	}
+	ESP_LOGI(TAG, "-----------------------------------------");
+}
+
+
 void JSON_Analyze(const cJSON * const root) {
-	//ESP_LOGI(TAG, "root->type=%s", JSON_Types(root->type));
+	ESP_LOGD(TAG, "root->type=%s", JSON_Types(root->type));
 	cJSON *current_element = NULL;
-	//ESP_LOGI(TAG, "root->child=%p", root->child);
-	//ESP_LOGI(TAG, "root->next =%p", root->next);
+	ESP_LOGD(TAG, "root->child=%p", root->child);
+	ESP_LOGD(TAG, "root->next =%p", root->next);
 	static char* string;
 	cJSON_ArrayForEach(current_element, root) {
-		//ESP_LOGI(TAG, "type=%s", JSON_Types(current_element->type));
-		//ESP_LOGI(TAG, "current_element->string=%p", current_element->string);
+		ESP_LOGD(TAG, "type=%s", JSON_Types(current_element->type));
+		ESP_LOGD(TAG, "current_element->string=%p", current_element->string);
 		if (current_element->string) {
 			//const char* string = current_element->string;
 			string = current_element->string;
-			//ESP_LOGI(TAG, "[%s]", string);
+			ESP_LOGI(TAG, "[%s]", string);
 		}
 		if (cJSON_IsInvalid(current_element)) {
 			ESP_LOGW(TAG, "Invalid");
@@ -138,8 +162,9 @@ void JSON_Analyze(const cJSON * const root) {
 			const char* valuestring = current_element->valuestring;
 			ESP_LOGI(TAG, "[%s] %s", string, valuestring);
 		} else if (cJSON_IsArray(current_element)) {
-			//ESP_LOGI(TAG, "Array");
-			JSON_Analyze(current_element);
+			ESP_LOGD(TAG, "Array");
+			//JSON_Analyze(current_element);
+			JSON_Print(current_element);
 		} else if (cJSON_IsObject(current_element)) {
 			//ESP_LOGI(TAG, "Object");
 			JSON_Analyze(current_element);
@@ -153,7 +178,7 @@ void JSON_Analyze(const cJSON * const root) {
 
 esp_err_t http_client_get(char * path)
 {
-	ESP_LOGI(TAG, "http_client_get path=%s",path);
+	ESP_LOGI(TAG, "http_client_get path=[%s]",path);
 	char local_response_buffer[MAX_HTTP_OUTPUT_BUFFER] = {0};
 	char url[64];
 	//http://192.168.10.43:8080/api.php/records/posts
@@ -168,7 +193,7 @@ esp_err_t http_client_get(char * path)
 	esp_http_client_config_t config = {
 		.url = url,
 		.event_handler = _http_event_handler,
-		.user_data = local_response_buffer,		   // Pass address of local buffer to get response
+		.user_data = local_response_buffer,			 // Pass address of local buffer to get response
 	};
 	esp_http_client_handle_t client = esp_http_client_init(&config);
 
@@ -180,12 +205,15 @@ esp_err_t http_client_get(char * path)
 				esp_http_client_get_content_length(client));
 		ESP_LOGI(TAG, "\n%s", local_response_buffer);
 
-#if CONFIG_JSON_PARSE
 		ESP_LOGI(TAG, "Deserialize.....");
 		cJSON *root = cJSON_Parse(local_response_buffer);
-		JSON_Analyze(root);
+		//JSON_Print(root);
+		if (strlen(path)) {
+			JSON_Print(root);
+		} else {
+			JSON_Analyze(root);
+		}
 		cJSON_Delete(root);
-#endif
 	} else {
 		ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
 	}
@@ -204,7 +232,7 @@ int http_client_post(void)
 	esp_http_client_config_t config = {
 		.url = url,
 		.event_handler = _http_event_handler,
-		.user_data = local_response_buffer,				   // Pass address of local buffer to get response
+		.user_data = local_response_buffer,					 // Pass address of local buffer to get response
 	};
 	esp_http_client_handle_t client = esp_http_client_init(&config);
 
@@ -245,7 +273,7 @@ esp_err_t http_client_put(char * path)
 	esp_http_client_config_t config = {
 		.url = url,
 		.event_handler = _http_event_handler,
-		.user_data = local_response_buffer,		   // Pass address of local buffer to get response
+		.user_data = local_response_buffer,			 // Pass address of local buffer to get response
 	};
 	esp_http_client_handle_t client = esp_http_client_init(&config);
 
@@ -284,7 +312,7 @@ esp_err_t http_client_delete(char * path)
 	esp_http_client_config_t config = {
 		.url = url,
 		.event_handler = _http_event_handler,
-		.user_data = local_response_buffer,		   // Pass address of local buffer to get response
+		.user_data = local_response_buffer,			 // Pass address of local buffer to get response
 	};
 	esp_http_client_handle_t client = esp_http_client_init(&config);
 
@@ -313,22 +341,22 @@ void http_client(void *pvParameters)
 	//Read all data
 	ESP_LOGI(TAG, "");
 	ESP_LOGI(TAG, "Enter key to Read all data");
-	xEventGroupClearBits(xEventGroup, KEYBOARD_ENTER_BIT);
-	xEventGroupWaitBits(xEventGroup, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+	xEventGroupClearBits(s_key_event_group, KEYBOARD_ENTER_BIT);
+	xEventGroupWaitBits(s_key_event_group, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
 	http_client_get("");
 
 	//Read by id
 	ESP_LOGI(TAG, "");
 	ESP_LOGI(TAG, "Enter key to Read by id");
-	xEventGroupClearBits(xEventGroup, KEYBOARD_ENTER_BIT);
-	xEventGroupWaitBits(xEventGroup, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+	xEventGroupClearBits(s_key_event_group, KEYBOARD_ENTER_BIT);
+	xEventGroupWaitBits(s_key_event_group, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
 	http_client_get("2");
 
 	//Create new record
 	ESP_LOGI(TAG, "");
 	ESP_LOGI(TAG, "Enter key to Create new record");
-	xEventGroupClearBits(xEventGroup, KEYBOARD_ENTER_BIT);
-	xEventGroupWaitBits(xEventGroup, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+	xEventGroupClearBits(s_key_event_group, KEYBOARD_ENTER_BIT);
+	xEventGroupWaitBits(s_key_event_group, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
 	int new_id = http_client_post();
 	ESP_LOGI(TAG, "new_id=%d", new_id);
 	char path[10];
@@ -338,8 +366,8 @@ void http_client(void *pvParameters)
 	//Update record
 	ESP_LOGI(TAG, "");
 	ESP_LOGI(TAG, "Enter key to Update new record");
-	xEventGroupClearBits(xEventGroup, KEYBOARD_ENTER_BIT);
-	xEventGroupWaitBits(xEventGroup, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+	xEventGroupClearBits(s_key_event_group, KEYBOARD_ENTER_BIT);
+	xEventGroupWaitBits(s_key_event_group, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
 	if (http_client_get(path) == ESP_OK) {
 		http_client_put(path);
 		http_client_get(path);
@@ -348,12 +376,13 @@ void http_client(void *pvParameters)
 	//Delete record
 	ESP_LOGI(TAG, "");
 	ESP_LOGI(TAG, "Enter key to Delete new record");
-	xEventGroupClearBits(xEventGroup, KEYBOARD_ENTER_BIT);
-	xEventGroupWaitBits(xEventGroup, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
+	xEventGroupClearBits(s_key_event_group, KEYBOARD_ENTER_BIT);
+	xEventGroupWaitBits(s_key_event_group, KEYBOARD_ENTER_BIT, pdFALSE, pdTRUE, portMAX_DELAY);
 	if (http_client_get(path) == ESP_OK) {
 		http_client_delete(path);
-		http_client_get(path);
+		http_client_get("");
 	}
+	ESP_LOGI(TAG, "All Finish!!");
 
 	while(1) {
 		vTaskDelay(1);

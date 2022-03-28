@@ -19,10 +19,10 @@ menu "Application Configuration"
 			Set the Maximum retry to avoid station reconnecting to the AP unlimited when the AP is really inexistent.
 
 	config ESP_WEB_SERVER_IP
-		string "IP address of WEB server"
-		default "192.168.10.43"
+		string "IP or mDNS of your WEB server"
+		default "webserver.local"
 		help
-			IP address of your WEB server.
+			IP or mDNS of your WEB server.
 
 	config ESP_WEB_SERVER_PORT
 		string "Port number of WEB serve"
@@ -35,11 +35,5 @@ menu "Application Configuration"
 		default "api.php/records/posts"
 		help
 			Path of php script.
-
-    config JSON_PARSE
-        bool "Enable JSON parse"
-        default false
-        help
-            Enable JSON parse.
 
 endmenu
