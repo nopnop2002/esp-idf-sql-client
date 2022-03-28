@@ -92,14 +92,6 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 	return ESP_OK;
 }
 
-void JSON_Record(const cJSON * const array) {
-		int id = cJSON_GetObjectItem(array,"id")->valueint;
-		int user_id = cJSON_GetObjectItem(array,"user_id")->valueint;
-		int category_id = cJSON_GetObjectItem(array,"category_id")->valueint;
-		char *content = cJSON_GetObjectItem(array,"content")->valuestring;
-		ESP_LOGI(TAG, "%d\t%d\t%d\t%s", id, user_id, category_id, content);
-}
-
 char *JSON_Types(int type) {
 	if (type == cJSON_Invalid) return ("cJSON_Invalid");
 	if (type == cJSON_False) return ("cJSON_False");
@@ -113,65 +105,39 @@ char *JSON_Types(int type) {
 	return NULL;
 }
 
+/*
+{"id":1,"user_id":1,"category_id":1,"content":"blog started"}
+*/
+void JSON_Record(const cJSON * const array) {
+	int id = cJSON_GetObjectItem(array,"id")->valueint;
+	int user_id = cJSON_GetObjectItem(array,"user_id")->valueint;
+	int category_id = cJSON_GetObjectItem(array,"category_id")->valueint;
+	char *content = cJSON_GetObjectItem(array,"content")->valuestring;
+	ESP_LOGI(TAG, "%d\t%d\t%d\t%s", id, user_id, category_id, content);
+}
+
+/*
+{"records":[{"id":1,"user_id":1,"category_id":1,"content":"blog started"},{"id":2,"user_id":1,"category_id":2,"content":"It works!"}]}
+{"id":1,"user_id":1,"category_id":1,"content":"blog started"}
+*/
 void JSON_Print(const cJSON * const root) {
 	ESP_LOGI(TAG, "-----------------------------------------");
-	ESP_LOGD(TAG, "root->type=%s", JSON_Types(root->type));
-	if (cJSON_IsArray(root)) {
-		ESP_LOGD(TAG, "JSON_Print root->type is Array");
-		int root_array_size = cJSON_GetArraySize(root); 
-		ESP_LOGD(TAG, "JSON_Print root_array_size=%d", root_array_size);
-		for (int i=0;i<root_array_size;i++) {
-			cJSON *record = cJSON_GetArrayItem(root,i);
+	if (cJSON_GetObjectItem(root,"records")) {
+		cJSON *records = cJSON_GetObjectItem(root,"records");
+		//ESP_LOGI(TAG, "records->type=%s", JSON_Types(records->type));
+		ESP_LOGI(TAG, "%s", records->string);
+		int record_size = cJSON_GetArraySize(records);
+		//ESP_LOGI(TAG, "record_size=%d", record_size);
+		for (int i=0;i<record_size;i++) {
+			cJSON *record = cJSON_GetArrayItem(records,i);
+			//ESP_LOGI(TAG, "record->type=%s", JSON_Types(record->type));
 			JSON_Record(record);
 		}
+
 	} else {
-		ESP_LOGD(TAG, "JSON_Print root->type is Object");
 		JSON_Record(root);
 	}
 	ESP_LOGI(TAG, "-----------------------------------------");
-}
-
-
-void JSON_Analyze(const cJSON * const root) {
-	ESP_LOGD(TAG, "root->type=%s", JSON_Types(root->type));
-	cJSON *current_element = NULL;
-	ESP_LOGD(TAG, "root->child=%p", root->child);
-	ESP_LOGD(TAG, "root->next =%p", root->next);
-	static char* string;
-	cJSON_ArrayForEach(current_element, root) {
-		ESP_LOGD(TAG, "type=%s", JSON_Types(current_element->type));
-		ESP_LOGD(TAG, "current_element->string=%p", current_element->string);
-		if (current_element->string) {
-			//const char* string = current_element->string;
-			string = current_element->string;
-			ESP_LOGI(TAG, "[%s]", string);
-		}
-		if (cJSON_IsInvalid(current_element)) {
-			ESP_LOGW(TAG, "Invalid");
-		} else if (cJSON_IsFalse(current_element)) {
-			ESP_LOGI(TAG, "[%s] False", string);
-		} else if (cJSON_IsTrue(current_element)) {
-			ESP_LOGI(TAG, "[%s] True", string);
-		} else if (cJSON_IsNull(current_element)) {
-			ESP_LOGI(TAG, "[%s] Null", string);
-		} else if (cJSON_IsNumber(current_element)) {
-			int valueint = current_element->valueint;
-			double valuedouble = current_element->valuedouble;
-			ESP_LOGI(TAG, "[%s] int=%d double=%f", string, valueint, valuedouble);
-		} else if (cJSON_IsString(current_element)) {
-			const char* valuestring = current_element->valuestring;
-			ESP_LOGI(TAG, "[%s] %s", string, valuestring);
-		} else if (cJSON_IsArray(current_element)) {
-			ESP_LOGD(TAG, "Array");
-			//JSON_Analyze(current_element);
-			JSON_Print(current_element);
-		} else if (cJSON_IsObject(current_element)) {
-			//ESP_LOGI(TAG, "Object");
-			JSON_Analyze(current_element);
-		} else if (cJSON_IsRaw(current_element)) {
-			ESP_LOGW(TAG, "Raw(Not support)");
-		}
-	}
 }
 
 #define MAX_HTTP_OUTPUT_BUFFER 2048
@@ -207,12 +173,7 @@ esp_err_t http_client_get(char * path)
 
 		ESP_LOGI(TAG, "Deserialize.....");
 		cJSON *root = cJSON_Parse(local_response_buffer);
-		//JSON_Print(root);
-		if (strlen(path)) {
-			JSON_Print(root);
-		} else {
-			JSON_Analyze(root);
-		}
+		JSON_Print(root);
 		cJSON_Delete(root);
 	} else {
 		ESP_LOGE(TAG, "HTTP GET request failed: %s", esp_err_to_name(err));
