@@ -1,5 +1,4 @@
 # esp-idf-sql-client
-MySQL access example for esp-idf.   
 You can access MySQL on the server over the network.   
 Use [this](https://github.com/mevdschee/php-crud-api) as PHP script of WEB server.
 

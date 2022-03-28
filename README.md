@@ -6,10 +6,10 @@ Use [this](https://github.com/mevdschee/php-crud-api) as PHP script of WEB serve
 ![0001](https://user-images.githubusercontent.com/6020549/71758785-7694ae80-2ee7-11ea-99cc-cf65c44f48bc.jpg)
 
 # Using MySQL
-https://github.com/nopnop2002/esp-idf-sql-client/mysql/
+https://github.com/nopnop2002/esp-idf-sql-client/tree/master/mysql
 
 # Using PostgreSQL
-https://github.com/nopnop2002/esp-idf-sql-client/pgsql/
+https://github.com/nopnop2002/esp-idf-sql-client/tree/master/pgsql
 
 # Software requirements
 esp-idf ver4.1 or later.   
