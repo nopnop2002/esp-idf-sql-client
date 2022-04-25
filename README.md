@@ -6,9 +6,11 @@ Use [this](https://github.com/mevdschee/php-crud-api) as PHP script of WEB serve
 ![Slide1](https://user-images.githubusercontent.com/6020549/160416973-7b9a5ec5-ec40-4ad2-9e58-3ba1001d2353.JPG)
 
 # Using MySQL
+Install php-crud-api according to the following:   
 https://github.com/nopnop2002/esp-idf-sql-client/tree/master/mysql
 
 # Using PostgreSQL
+Install php-crud-api according to the following:   
 https://github.com/nopnop2002/esp-idf-sql-client/tree/master/pgsql
 
 # Software requirements
