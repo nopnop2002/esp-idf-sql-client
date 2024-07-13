@@ -2,6 +2,9 @@
  *
  * This sample code is in the public domain.
  */
+
+#include <stdio.h>
+#include <inttypes.h>
 #include <string.h>
 
 #include "freertos/FreeRTOS.h"
@@ -47,7 +50,7 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 		case HTTP_EVENT_ON_DATA:
 			ESP_LOGD(TAG, "HTTP_EVENT_ON_DATA, len=%d", evt->data_len);
 			ESP_LOGD(TAG, "HTTP_EVENT_ON_DATA, output_len=%d", output_len);
-			ESP_LOGD(TAG, "HTTP_EVENT_ON_DATA, content_length=%d", esp_http_client_get_content_length(evt->client));
+			ESP_LOGD(TAG, "HTTP_EVENT_ON_DATA, content_length=%"PRId64, esp_http_client_get_content_length(evt->client));
 			// If user_data buffer is configured, copy the response into the buffer
 			if (evt->user_data) {
 				memcpy(evt->user_data + output_len, evt->data, evt->data_len);
@@ -87,6 +90,12 @@ esp_err_t _http_event_handler(esp_http_client_event_t *evt)
 				ESP_LOGE(TAG, "Last esp error code: 0x%x", err);
 				ESP_LOGE(TAG, "Last mbedtls failure: 0x%x", mbedtls_err);
 			}
+			break;
+		case HTTP_EVENT_REDIRECT:
+			ESP_LOGD(TAG, "HTTP_EVENT_REDIRECT");
+			esp_http_client_set_header(evt->client, "From", "user@example.com");
+			esp_http_client_set_header(evt->client, "Accept", "text/html");
+			esp_http_client_set_redirection(evt->client);
 			break;
 	}
 	return ESP_OK;
@@ -166,7 +175,7 @@ esp_err_t http_client_get(char * path)
 	// GET
 	esp_err_t err = esp_http_client_perform(client);
 	if (err == ESP_OK) {
-		ESP_LOGD(TAG, "HTTP GET Status = %d, content_length = %d",
+		ESP_LOGD(TAG, "HTTP GET Status = %d, content_length = %"PRId64,
 				esp_http_client_get_status_code(client),
 				esp_http_client_get_content_length(client));
 		ESP_LOGI(TAG, "\n%s", local_response_buffer);
@@ -205,7 +214,7 @@ int http_client_post(void)
 	esp_http_client_set_post_field(client, post_data, strlen(post_data));
 	esp_err_t err = esp_http_client_perform(client);
 	if (err == ESP_OK) {
-		ESP_LOGD(TAG, "HTTP GET Status = %d, content_length = %d",
+		ESP_LOGD(TAG, "HTTP GET Status = %d, content_length = %"PRId64,
 				esp_http_client_get_status_code(client),
 				esp_http_client_get_content_length(client));
 		ESP_LOGI(TAG, "\n%s", local_response_buffer);
@@ -245,7 +254,7 @@ esp_err_t http_client_put(char * path)
 	esp_http_client_set_post_field(client, post_data, strlen(post_data));
 	esp_err_t err = esp_http_client_perform(client);
 	if (err == ESP_OK) {
-		ESP_LOGD(TAG, "HTTP GET Status = %d, content_length = %d",
+		ESP_LOGD(TAG, "HTTP GET Status = %d, content_length = %"PRId64,
 				esp_http_client_get_status_code(client),
 				esp_http_client_get_content_length(client));
 		ESP_LOGI(TAG, "\n%s", local_response_buffer);
@@ -286,7 +295,7 @@ esp_err_t http_client_delete(char * path)
 	esp_http_client_set_method(client, HTTP_METHOD_DELETE);
 	esp_err_t err = esp_http_client_perform(client);
 	if (err == ESP_OK) {
-		ESP_LOGD(TAG, "HTTP GET Status = %d, content_length = %d",
+		ESP_LOGD(TAG, "HTTP GET Status = %d, content_length = %"PRId64,
 				esp_http_client_get_status_code(client),
 				esp_http_client_get_content_length(client));
 		ESP_LOGI(TAG, "\n%s", local_response_buffer);

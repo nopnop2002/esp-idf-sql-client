@@ -2,8 +2,10 @@
  *
  * This sample code is in the public domain.
  */
-#include <string.h>
 
+#include <stdio.h>
+#include <inttypes.h>
+#include <string.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/event_groups.h"
@@ -135,7 +137,7 @@ int KEYBOARD_ENTER_BIT = BIT2;
 
 void keyin_task(void *pvParameters)
 {
-	//ESP_LOGI(pcTaskGetTaskName(0), "Start");
+	//ESP_LOGI(pcTaskGetName(0), "Start");
 	uint16_t c;
 	while (1) {
 		c = fgetc(stdin);
@@ -143,9 +145,9 @@ void keyin_task(void *pvParameters)
 			vTaskDelay(10);
 			continue;
 		}
-		//ESP_LOGI(pcTaskGetTaskName(0), "c=%x", c);
+		//ESP_LOGI(pcTaskGetName(0), "c=%x", c);
 		if (c == 0x0a) {
-			ESP_LOGD(pcTaskGetTaskName(0), "Push Enter");
+			ESP_LOGD(pcTaskGetName(0), "Push Enter");
 			xEventGroupSetBits(s_key_event_group, KEYBOARD_ENTER_BIT);
 		}
 	}
