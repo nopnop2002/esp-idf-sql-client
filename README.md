@@ -14,7 +14,8 @@ Install php-crud-api according to the following:
 https://github.com/nopnop2002/esp-idf-sql-client/tree/master/pgsql
 
 # Software requirements
-ESP-IDF V5.x.   
+ESP-IDF V5.0 or later.   
+ESP-IDF V4.4 release branch reached EOL in July 2024.   
 
 # Installation   
 ```
